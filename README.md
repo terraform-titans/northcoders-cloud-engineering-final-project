@@ -27,88 +27,10 @@ Immediately we will start provisioning infrastructure using Terraform. This mean
 
 Before we can do this, however, we need to setup a secure **remote state backend** to improve security, reliability, and to facilitate teamwork in the development and operation of the software. A neater approach would be to provision an S3 bucket and DynamoDB table externally to this project, however for the purposes of knowledge exchange, we have included the neccesary configuration in this repository.
 
-It is first neccesary to run the config. in `remote-stateproviders.tf`:
-
-```
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.67.0"
-    }
-  }
-
-  required_version = ">= 1.4.0"
-}
-
-provider "aws" {
-  region = "eu-west-2"
-}
-```
-
-and `backend.tf` **having commented out the terraform block**:
-
-```
-# terraform {
-#   backend "s3" {
-#     bucket = "tt-remote-backend"
-#     key    = "backend/terraform.tfstate"
-#     region = "eu-west-2"
-#     dynamodb_table = "remote-backend"
-#   }
-# }
-
-# NOTE: remote backend setup depends on below S3 & DynamoDB config
-# Provisioning S3 bucket for remote state backend
-
-resource "aws_s3_bucket" "remote-backend" {
-  bucket = "tt-remote-backend"
-
-  tags = {
-    Name        = "remote-backend"
-    Environment = "Dev"
-  }
-}
-
-resource "aws_s3_bucket_ownership_controls" "remote-backend" {
-  depends_on = [aws_s3_bucket.remote-backend]
-  
-  bucket = "tt-remote-backend"
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_acl" "remote-backend" {
-  depends_on = [aws_s3_bucket_ownership_controls.remote-backend]
-
-  bucket = "tt-remote-backend"
-  acl    = "private"
-}
-
-resource "aws_s3_bucket_versioning" "remote-backend" {
-  bucket = "tt-remote-backend"
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-# Provsioning DynamoDB table for remote state backend
-
-resource "aws_dynamodb_table" "remote-backend" {
-  name         = "remote-backend"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
-```
-
-Once the S3 bucket and DynamoDB table have been provisioned, uncommment the terraform block and run `terraform init` to intialize the remote state backend.
+1) Firstly you need to specify the name we want to use for our remote state S3 bucket by specifying it as a variable value in the `.tfvars` file, and hardcoding the same value into line 6 of the `remote-state/backend.tf` file.
+2) We can now run the config. In the `remote-state` directory: `providers.tf` and `backend.tf` **having commented out the terraform block therein**.
+3) Once the S3 bucket and DynamoDB table have been provisioned, **uncommment** the terraform block and run `terraform init` to intialize the remote state backend.
 
 ### Virtual Private Cloud
 
-
+We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC.
