@@ -10,6 +10,8 @@ resource "aws_s3_bucket" "remote-backend" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "remote-backend" {
+  depends_on = [aws_s3_bucket.remote-backend]
+  
   bucket = "tt-remote-backend"
   rule {
     object_ownership = "BucketOwnerPreferred"
