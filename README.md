@@ -31,3 +31,11 @@ We've shared a sample config for a Postgres database as well.
 ## Metrics and health
 
 We've added Spring actuator and enabled prometheus so there is a [health endpoint](http://localhost:8080/actuator/health) and [prometheus metrics](http://localhost:8080/actuator/prometheus)
+
+## API Docs
+
+Coming soon....
+
+We'll produce some [Swagger API docs](https://swagger.io/ when we get a chance
+
+Note to self: Follow through Swagger and Spring [blog](https://www.baeldung.com/spring-rest-openapi-documentation)
