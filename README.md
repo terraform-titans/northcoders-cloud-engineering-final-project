@@ -17,7 +17,7 @@ The final group project in fullfillment of Northcoders' Cloud Engineering bootca
 
 The following setup guide assumes access to an AWS account, as well as local installation  of: ArgoCD, CircleCI, Docker, Helm, Kubernetes & kubectl, and Terraform.
 
-You will also need to configure your AWS account to work with the AWS CLI and Terraform... [This needs to be worked on]
+You will also need to configure your AWS account to work with the AWS CLI and Terraform... **[This needs to be worked on]**
 
 ## Provisioning a VPC
 
