@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket = "tt-remote-backend"
+    key    = "backend/terraform.tfstate"
+    region = "eu-west-2"
+    dynamodb_table = "remote-backend"
+  }
+}
+
+# NOTE: remote backend setup depends on below S3 & dynamoDB config
 # Provisioning S3 bucket for remote state backend
 
 resource "aws_s3_bucket" "remote-backend" {
