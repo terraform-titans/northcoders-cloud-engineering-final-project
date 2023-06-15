@@ -3,7 +3,7 @@
 
 terraform {
   backend "s3" {
-    bucket = "lauras-bucket2"
+    bucket = "your_bucket_name" # NOTE: this needs to match the string value of the bucket_name variable set in the ./terraform.tfvars file
     key    = "backend/terraform.tfstate"
     region = "eu-west-2"
     dynamodb_table = "remote-backend"

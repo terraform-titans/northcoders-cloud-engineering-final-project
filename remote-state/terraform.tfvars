@@ -1,3 +1,3 @@
-bucket_name =   "lauras-bucket2"
+bucket_name =   "tt-remote-backend"
 
 //change me as bucket names need to be unique
