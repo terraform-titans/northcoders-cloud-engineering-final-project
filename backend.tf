@@ -1,3 +1,6 @@
+# Comment out the below and provision an S3 bucket and DynamoDB table underneath
+# Then uncomment the terraform block and run 'terraform init' to initialize the remote state backend
+
 terraform {
   backend "s3" {
     bucket = "tt-remote-backend"
@@ -7,7 +10,7 @@ terraform {
   }
 }
 
-# NOTE: remote backend setup depends on below S3 & dynamoDB config
+# NOTE: remote backend setup depends on below S3 & DynamoDB config
 # Provisioning S3 bucket for remote state backend
 
 resource "aws_s3_bucket" "remote-backend" {
