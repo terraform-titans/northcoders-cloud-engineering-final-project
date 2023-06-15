@@ -1,7 +1,5 @@
 terraform {
   backend "s3" {
-    depends_on = 
-
     bucket = "tt-remote-backend"
     key    = "backend/terraform.tfstate"
     region = "eu-west-2"
