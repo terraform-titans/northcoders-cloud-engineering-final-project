@@ -1,30 +1,30 @@
 # Provisioning S3 bucket for remote state backend
 
-resource "aws_s3_bucket" "remote_backend" {
-  bucket = "tt_remote_backend"
+resource "aws_s3_bucket" "remote-backend" {
+  bucket = "tt-remote-backend"
 
   tags = {
-    Name        = "remote_backend"
+    Name        = "remote-backend"
     Environment = "Dev"
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "remote_backend" {
-  bucket = "tt_remote_backend"
+resource "aws_s3_bucket_ownership_controls" "remote-backend" {
+  bucket = "tt-remote-backend"
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_acl" "remote_backend" {
-  depends_on = [aws_s3_bucket_ownership_controls.remote_backend]
+resource "aws_s3_bucket_acl" "remote-backend" {
+  depends_on = [aws_s3_bucket_ownership_controls.remote-backend]
 
-  bucket = "tt_remote_backend"
+  bucket = "tt-remote-backend"
   acl    = "private"
 }
 
-resource "aws_s3_bucket_versioning" "bucket_versioning_name" {
-  bucket = "tt_remote_backend"
+resource "aws_s3_bucket_versioning" "remote-backend" {
+  bucket = "tt-remote-backend"
   versioning_configuration {
     status = "Enabled"
   }
