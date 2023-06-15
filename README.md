@@ -27,7 +27,7 @@ Immediately we will start provisioning infrastructure using Terraform. This mean
 
 Before we can do this, however, we need to setup a secure **remote state backend** to improve security, reliability, and to facilitate teamwork in the development and operation of the software. A neater approach would be to provision an S3 bucket and DynamoDB table externally to this project, however for the purposes of knowledge exchange, we have included the neccesary configuration in this repository.
 
-It is first neccesary to run the config. in `providers.tf`:
+It is first neccesary to run the config. in `remote-stateproviders.tf`:
 
 ```
 terraform {
