@@ -52,7 +52,7 @@ jobs:
 
   build-and-test-js:
     docker:
-      - image: cimg/node:20.3.0
+      - image: cimg/node:18.12.1
     working_directory: ~/northcoders-cloud-engineering-final-project
     steps:
       - checkout
