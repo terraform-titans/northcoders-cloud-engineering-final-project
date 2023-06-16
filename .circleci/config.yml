@@ -58,7 +58,7 @@ jobs:
       - run: cd node-api && npm install
  
       - run: cd node-api && npm test
-    build-image-and-push-js:
+  build-image-and-push-js:
     working_directory: ~/northcoders-cloud-engineering-final-project/frontend
     docker:
       - image: cimg/aws:2023.05
