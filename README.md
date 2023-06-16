@@ -1,6 +1,6 @@
 # Northcoders - Cloud Engineering - Final Group Project
 
-### Designed by Joseph Adams, Joshua Stride, & Laura Woolard
+### Designed by Joseph Adams, Joshua Stride, & Laura Woollard
 
 The final group project in fullfillment of Northcoders' Cloud Engineering bootcamp; a full-stack web application deployed using the software development and cloud architecture knowledge we have developed over the past thirteen weeks, including:
 - JavaScript, HTML5, CSS3, React, & Vite
