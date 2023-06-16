@@ -55,7 +55,7 @@ jobs:
     working_directory: ~/northcoders-cloud-engineering-final-project
     steps:
       - checkout
-      - run: cd frontend && npm install
+      - run: cd frontend && node ./node_modules/esbuild/install.js
  
       - run: npm test
   build-image-and-push-js:
