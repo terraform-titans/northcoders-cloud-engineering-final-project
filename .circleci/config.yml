@@ -8,7 +8,7 @@ orbs:
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-  build-and-test:
+  build-and-test-java:
     # These next lines define a Docker executor: https://circleci.com/docs/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the Docker image tag below to openjdk version of your application.
@@ -35,7 +35,7 @@ jobs:
 
   # Will build Docker image, authenticate AWS account and push to container
   # registry
-  build-image-and-push:
+  build-image-and-push-java:
     working_directory: ~/northcoders-cloud-engineering-final-project/backend
     docker:
       - image: cimg/aws:2023.05
@@ -49,6 +49,28 @@ jobs:
           public-registry-alias: l1w4p1o6
           public-registry: true
 
+  build-and-test-js:
+    docker:
+      - image: cimg/node:20.3.0
+    working_directory: ~/northcoders-cloud-engineering-final-project/frontend
+    steps:
+      - checkout
+      - run: cd node-api && npm install
+ 
+      - run: cd node-api && npm test
+    build-image-and-push-js:
+    working_directory: ~/northcoders-cloud-engineering-final-project/frontend
+    docker:
+      - image: cimg/aws:2023.05
+    steps:
+      - setup_remote_docker # Ensures that we can issue docker build commands
+      - aws-ecr/build-and-push-image:
+          repo: project-frontend
+          path: "frontend" # This is the directory to look for the Dockerfile
+          build-path: "frontend" # This is directory for Docker to load the build path to source code
+          tag: ${CIRCLE_BUILD_NUM} # This will be automatically replaced with the job number
+          public-registry-alias: l1w4p1o6
+          public-registry: true
           
 #run test
 
@@ -58,7 +80,11 @@ workflows:
   demo-app-pipeline: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build-and-test
-      - build-image-and-push:
+      - build-and-test-java
+      - build-image-and-push-java:
           requires: 
-            - build-and-test 
+            - build-and-test-java 
+      - build-and-test-js
+      - build-image-and-push-js:
+          requires:
+            - build-and-test-js
