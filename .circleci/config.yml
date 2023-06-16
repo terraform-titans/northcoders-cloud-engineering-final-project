@@ -52,10 +52,10 @@ jobs:
   build-and-test-js:
     docker:
       - image: cimg/node:20.3.0
-    working_directory: ~/northcoders-cloud-engineering-final-project/frontend
+    working_directory: ~/northcoders-cloud-engineering-final-project
     steps:
       #- checkout
-      - run: npm install
+      - run: cd frontend %% npm install
  
       - run: npm test
   build-image-and-push-js:
