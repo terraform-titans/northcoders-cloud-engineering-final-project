@@ -25,7 +25,7 @@ jobs:
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
-          command: mvn spring-boot:run
+          command: mvn -B -DskipTests clean package
           working_directory: ~/northcoders-cloud-engineering-final-project/backend
       # Then run your tests!
       - run:
