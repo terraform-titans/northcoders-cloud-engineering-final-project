@@ -54,7 +54,7 @@ jobs:
       - image: cimg/node:20.3.0
     working_directory: ~/northcoders-cloud-engineering-final-project/frontend
     steps:
-      - checkout
+      
       - run: npm install
  
       - run: cd frontend && npm test
