@@ -16,18 +16,29 @@ spec:
       containers:
         - name: backend
           image: "public.ecr.aws/l1w4p1o6/project-backend-api"
-          # livenessProbe:
-          #   httpGet:
-          #     path: /actuator/health
-          #     port: 8080
-          #     httpHeaders:
-          #     - name: Custom-Header
-          #       value: Awesome
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+              - name: Custom-Header
+                value: Awesome
+            initialDelaySeconds: 60
+            periodSeconds: 30
           ports:
             - name: http
               containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: address
+            - name: DB_PORT
+              value: number
+            - name: DB_NAME
+              value: name
+            - name: DB_USERNAME
+              value: username
+            - name: DB_PASSWORD
+              value: password
 ---
 apiVersion: v1
 kind: Service
