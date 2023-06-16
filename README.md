@@ -33,4 +33,6 @@ Before we can do this, however, we need to setup a secure **remote state backend
 
 ### Virtual Private Cloud
 
-We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC.
+We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC. **[Does the user just need to run `terraform apply` and the thing will deploy?]**
+
+**[User won't need to deploy kubernetes, because Argo will do it??]** 
