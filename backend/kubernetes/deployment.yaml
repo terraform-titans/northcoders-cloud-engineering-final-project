@@ -40,15 +40,15 @@ spec:
               containerPort: 8080
           env:
             - name: DB_HOST
-              value: *
+              value: -
             - name: DB_PORT
-              value: *
+              value: -
             - name: DB_NAME
-              value: *
+              value: -
             - name: DB_USERNAME
-              value: *
+              value: -
             - name: DB_PASSWORD
-              value: *
+              value: -
 ---
 apiVersion: v1
 kind: Service
