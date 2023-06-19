@@ -42,3 +42,9 @@ variable "enable_vpn_gateway" {
   type        = bool
   default     = true
 }
+
+variable "cluster_name" {
+  description = "the name of the EKS cluster"
+  type        = string
+  default     = "unnamed_cluster"
+}

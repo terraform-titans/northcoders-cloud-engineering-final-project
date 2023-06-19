@@ -24,4 +24,11 @@ module "eks" {
       desired_size = 2
     }
   }
+
+}
+
+resource "aws_eks_addon" "coredns" {
+  cluster_name                = module.eks.cluster_name
+  addon_name                  = "coredns"
+  addon_version               = "v1.10.1-eksbuild.1"
 }
