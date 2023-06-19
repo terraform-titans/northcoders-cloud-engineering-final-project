@@ -38,9 +38,9 @@ securityContext: {}
 
 service:
   type: LoadBalancer
-  port: 5000
+  port: 5050
   targetPort: 5173
-  
+
 ingress:
   enabled: false
   className: ""
