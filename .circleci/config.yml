@@ -46,7 +46,7 @@ jobs:
           repo: project-backend-api
           path: "backend" # This is the directory to look for the Dockerfile
           build-path: "backend" # This is directory for Docker to load the build path to source code
-          tag: ${CIRCLE_BUILD_NUM} # This will be automatically replaced with the job number
+          tag: latest # This will be automatically replaced with the job number
           public-registry-alias: l1w4p1o6
           public-registry: true
 
@@ -69,7 +69,7 @@ jobs:
           repo: project-frontend
           path: "frontend" # This is the directory to look for the Dockerfile
           build-path: "frontend" # This is directory for Docker to load the build path to source code
-          tag: ${CIRCLE_BUILD_NUM} # This will be automatically replaced with the job number
+          tag: latest # This will be automatically replaced with the job number
           public-registry-alias: l1w4p1o6
           public-registry: true
           
