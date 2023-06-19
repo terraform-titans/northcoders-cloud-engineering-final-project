@@ -40,15 +40,15 @@ spec:
               containerPort: 8080
           env:
             - name: DB_HOST
-              value: database-2-instance-1.cllsxy7if4da.eu-west-2.rds.amazonaws.com
+              value: *
             - name: DB_PORT
-              value: "5432"
+              value: *
             - name: DB_NAME
-              value: ebdb
+              value: *
             - name: DB_USERNAME
-              value: postgres
+              value: *
             - name: DB_PASSWORD
-              value: awspassword
+              value: *
 ---
 apiVersion: v1
 kind: Service
