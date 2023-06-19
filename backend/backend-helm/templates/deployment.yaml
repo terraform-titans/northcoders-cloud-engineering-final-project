@@ -4,9 +4,7 @@ metadata:
   name: {{ include "backend-helm.fullname" . }}
   
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "backend-helm.selectorLabels" . | nindent 6 }}
