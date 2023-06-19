@@ -13,6 +13,16 @@ spec:
       labels:
         app: backend
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - arm64
       containers:
         - name: backend
           image: "public.ecr.aws/l1w4p1o6/project-backend-api"
@@ -30,15 +40,15 @@ spec:
               containerPort: 8080
           env:
             - name: DB_HOST
-              value: address
+              value: database-2-instance-1.cllsxy7if4da.eu-west-2.rds.amazonaws.com
             - name: DB_PORT
-              value: number
+              value: "5432"
             - name: DB_NAME
-              value: name
+              value: ebdb
             - name: DB_USERNAME
-              value: username
+              value: postgres
             - name: DB_PASSWORD
-              value: password
+              value: awspassword
 ---
 apiVersion: v1
 kind: Service
