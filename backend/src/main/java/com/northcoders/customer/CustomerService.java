@@ -47,6 +47,7 @@ public class CustomerService {
     }
 
     
+    @Counted(value = "counted.newUser",description = "Count of new users added")
     public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
         // check if email exists
         String email = customerRegistrationRequest.email();
@@ -57,7 +58,6 @@ public class CustomerService {
         }
 
         // add
-        @Counted(value = "counted.newUser",description = "Count of new users added")
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
