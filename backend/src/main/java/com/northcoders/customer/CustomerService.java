@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import io.micrometer.core.annotation.Counted;
+
 @Service
 public class CustomerService {
 
@@ -54,6 +56,8 @@ public class CustomerService {
         }
 
         // add
+        @Override
+        @Counted(value = "counted.greeting",description = "Cound of greeting method calls")
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
