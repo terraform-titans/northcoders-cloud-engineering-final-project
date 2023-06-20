@@ -17,7 +17,8 @@ The final group project in fullfillment of Northcoders' Cloud Engineering bootca
 
 The following setup guide assumes access to an AWS account, as well as local installation  of: ArgoCD, CircleCI, Docker, Helm, Kubernetes & kubectl, and Terraform.
 
-You will also need to configure your AWS account to work with the AWS CLI and Terraform... **[This needs to be worked on]**
+You will also need to configure your AWS account to work with the AWS CLI and Terraform... **[This needs to be worked on]** 
+You need to make sure you are logged in to your AWS account via the terminal with your AWS credentials.
 
 ## Provisioning a VPC
 
@@ -31,8 +32,26 @@ Before we can do this, however, we need to setup a secure **remote state backend
 2) We can now run the config. In the `remote-state` directory: `providers.tf` and `backend.tf` **having commented out the terraform block therein**.
 3) Once the S3 bucket and DynamoDB table have been provisioned, **uncommment** the terraform block and run `terraform init` to intialize the remote state backend.
 
-### Virtual Private Cloud
+### Virtual Private Cloud and Elastic Kubernetes Service
 
-We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC. **[Does the user just need to run `terraform apply` and the thing will deploy?]**
+We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC. 
+
+By running `terraform apply`, this will also create the empty EKS cluster.
+
+### Elastic Container Registry
+
+Here we will create the Elastic Container Registry repositories. This is where the docker image for the frontend and backend will be stored.
+
+To complete the next step, you will need to navigate to the ECR folders. You then need to run `terraform init` and then `terraform apply` in each of the folders (e.g. ecr-terraform-be then ecr-terraform-fe).
+
+### CircleCI
+
+When we open up circleCI, it will first of all build a docker image for us, which hold the
+
+To push up the docker images, you will need to set up circleCI. This is a continuous deployment service
+
+
+1) 
+2)
 
 **[User won't need to deploy kubernetes, because Argo will do it??]** 
