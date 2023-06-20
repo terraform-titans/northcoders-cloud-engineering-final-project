@@ -54,4 +54,33 @@ To push up the docker images, you will need to set up circleCI. This is a contin
 1) 
 2)
 
+### Argo 
+
+To access ArgoCD, you will first need to make sure you are in the correct kubernetes context. To do this please run 
+
+`aws eks --region eu-west-2 update-kubeconfig \ 
+    --name tt-project-cluster`
+
+We now need to set up the Argo namespace through:
+
+`kubectl create namespace argocd` 
+
+and then download and apply the argo yaml:
+
+`kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml` 
+
+To check this has all gone through and you are set up correctly, yyou can use this command:
+
+`kubectl get pods -n argocd`
+
+To access Argo, you will need to port-forward and you will need two terminals for this.
+Using the port which is given to you next to argocd-server when you run `kubectl get pods -n argocd`.
+
+Run this in one of your terminals:
+`kubectl port-forward svc/argocd-server -n argocd 8080:443` and then log on to your browser and access localhost:8080. You should see the argo homepage.  In your other terminal, run this command which will give you the password needed to log-in on the browser with the username as **admin**. 
+
+`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+
+
+
 **[User won't need to deploy kubernetes, because Argo will do it??]** 
