@@ -81,6 +81,13 @@ Run this in one of your terminals:
 
 `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
+On the ArgoCD dashboard, you will need to navigate to the repo section and add this repo to argo, using the 
+
+- set up repo
+- set up b/e app
+- set up f/e app
+- set up prometheus app
+
 
 
 **[User won't need to deploy kubernetes, because Argo will do it??]** 
