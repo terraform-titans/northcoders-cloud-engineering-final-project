@@ -5,6 +5,8 @@ metadata:
   annotations:
     prometheus.io/port: "backend"
     prometheus.io/scrape: "true"
+  labels:
+    app.kubernetes.io/part-of: backend
 spec:
   type: {{ .Values.service.type }}
   ports:
