@@ -46,6 +46,8 @@ public class CustomerService {
                 ));
     }
 
+    @Override
+    @Counted(value = "counted.greeting",description = "Cound of greeting method calls")
     public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
         // check if email exists
         String email = customerRegistrationRequest.email();
@@ -56,8 +58,6 @@ public class CustomerService {
         }
 
         // add
-        @Override
-        @Counted(value = "counted.greeting",description = "Cound of greeting method calls")
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
