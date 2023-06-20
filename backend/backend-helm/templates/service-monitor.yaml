@@ -8,6 +8,7 @@ spec:
     - interval: 15s
       port: backend
       scrapeTimeout: 14s
+      path: /actuator/prometheus
   namespaceSelector:
     matchNames:
       - default
