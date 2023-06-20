@@ -46,7 +46,6 @@ public class CustomerService {
                 ));
     }
 
-    @Override
     @Counted(value = "counted.greeting",description = "Cound of greeting method calls")
     public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
         // check if email exists
