@@ -4,6 +4,7 @@ metadata:
   name: {{ include "backend-helm.fullname" . }}
   annotations:
     prometheus.io/port: "backend"
+    prometheus.io/path: "/actuator/prometheus"
     prometheus.io/scrape: "true"
   labels:
     app.kubernetes.io/part-of: backend
