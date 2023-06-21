@@ -55,11 +55,11 @@ To push up the docker images, you will need to set up circleCI. This is a contin
 2)
 
 ### Argo 
+Argo is a kubernetes controller which continuously monitors running applications and compares the current, live state against the desired target state (as specified in the Git repo).
 
 To access ArgoCD, you will first need to make sure you are in the correct kubernetes context. To do this please run 
 
-`aws eks --region eu-west-2 update-kubeconfig \ 
-    --name tt-project-cluster`
+`aws eks --region eu-west-2 update-kubeconfig \ --name tt-project-cluster`
 
 We now need to set up the Argo namespace through:
 
@@ -69,7 +69,7 @@ and then download and apply the argo yaml:
 
 `kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml` 
 
-To check this has all gone through and you are set up correctly, yyou can use this command:
+To check this has all gone through and you are set up correctly, you can use this command:
 
 `kubectl get pods -n argocd`
 
@@ -81,14 +81,14 @@ Run this in one of your terminals:
 
 `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
-On the ArgoCD dashboard, you will need to navigate to the repo section and add this repo to argo. You will need to use a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+On the ArgoCD dashboard, you will need to navigate to the repo section and add this repo to argo. You will need to use a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to link your github repo to Argo securely. 
 
+Once the repo has been connected, you will need to set up the backend application. Select *add app* and make sure that you name the app something sensible, such as *backend* and select the project as *default*. In source, choose the repo url to be the one you've just set up and select the path as the backend folder of the repo.
+In destination, select the cluster as the default link which appears and name the namespace to be *default*. 
 
-- set up repo
-- set up b/e app
-- set up f/e app
-- set up prometheus app
+Click create, then refresh and sync the app.
 
+Repeat the above for the frontend app!
 
+We now need to do something similar, but with prometheus we will be using a helm chart not a github repo. The set up of the app follows a similar process however we need to make sure that we change a couple of the variables for it to work.  
 
-**[User won't need to deploy kubernetes, because Argo will do it??]** 
