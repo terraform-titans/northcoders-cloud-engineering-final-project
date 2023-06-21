@@ -1,0 +1,1 @@
+{"filename": "builds/a21f471c9cf5d043279ef5d1439e5eae76369ed9e4ada049631f62c63cfa6ff0.zip", "runtime": "node.js18.x", "artifacts_dir": "builds", "build_plan": [["zip", "./emailLambda.js", null]]}
