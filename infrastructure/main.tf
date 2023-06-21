@@ -13,3 +13,7 @@ module "eks_cluster" {
   private_subnets = module.network.private_subnets
   cluster_name    = var.cluster_name
 }
+
+module "lambda_function" {
+  source = "./modules/email-service"
+}
