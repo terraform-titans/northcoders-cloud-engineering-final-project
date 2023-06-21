@@ -14,6 +14,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.lambda.model.InvokeRequest;
+import software.amazon.awssdk.services.lambda.model.InvokeResponse;
+import software.amazon.awssdk.core.SdkBytes; // Add this import statement
+
+import java.nio.charset.StandardCharsets;
+
+
+
+
+
 @Service
 public class CustomerService {
 
@@ -54,6 +67,7 @@ public class CustomerService {
         }
 
         // add
+        invokeSendEmailLambda(email);
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
@@ -112,5 +126,32 @@ public class CustomerService {
 
         customerDao.updateCustomer(customer);
     }
+
+    public void invokeSendEmailLambda(String recipientEmail) {
+    // Create an instance of the LambdaClient
+        LambdaClient lambdaClient = LambdaClient.builder()
+                .region(Region.EU_WEST_2)
+                .credentialsProvider(DefaultCredentialsProvider.create())
+                .build();
+
+        // Create the input payload for the Lambda function
+        String inputPayload = "{\"recipientEmail\": \"" + recipientEmail + "\"}";
+
+        // Create an InvokeRequest with the Lambda function ARN and input payload
+        InvokeRequest request = InvokeRequest.builder()
+                .functionName("arn:aws:lambda:eu-west-2:751275925833:function:send-email")
+                .payload(SdkBytes.fromString(inputPayload, StandardCharsets.UTF_8)) 
+                .build();
+
+        // Invoke the Lambda function
+        InvokeResponse response = lambdaClient.invoke(request);
+
+        // Process the response
+        String result = new String(response.payload().asByteArray());
+        System.out.println("Lambda function response: " + result);
+
+        // Close the LambdaClient
+        lambdaClient.close();
+}
 }
 
