@@ -47,7 +47,7 @@ jobs:
           path: "backend" # This is the directory to look for the Dockerfile
           build-path: "backend" # This is directory for Docker to load the build path to source code
           tag: latest # This will be automatically replaced with the job number
-          public-registry-alias: l1w4p1o6
+          public-registry-alias: s2m0r0e2
           public-registry: true
 
   build-and-test-js:
@@ -70,7 +70,7 @@ jobs:
           path: "frontend" # This is the directory to look for the Dockerfile
           build-path: "frontend" # This is directory for Docker to load the build path to source code
           tag: latest # This will be automatically replaced with the job number
-          public-registry-alias: l1w4p1o6
+          public-registry-alias: s2m0r0e2
           public-registry: true
           
 #run test
