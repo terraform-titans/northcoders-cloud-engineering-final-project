@@ -118,3 +118,6 @@ Repeat the above for the frontend app!
 We now need to do something similar, but with prometheus we will be using a helm chart not a github repo. The set up of the app follows a similar process however we need to make sure that we change a couple of the variables for it to work.  
 
 
+# // ** need to add in more here ** //
+
+### Observability
