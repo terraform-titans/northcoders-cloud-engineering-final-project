@@ -35,8 +35,20 @@ Before we can do this, however, we need to setup a secure **remote state backend
 
 We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC. **[Does the user just need to run `terraform apply` and the thing will deploy?]**
 
-**[User won't need to deploy kubernetes, because Argo will do it??]** 
+**[User won't need to deploy kubernetes, because Argo will do it??]**
 
+### EKS 
+By running `terraform apply` in the previous step, this will have created an empty Elastic Kuberneters Service cluster where our frontend and backend services will be deployed.
+EKS is a managaed Kubernetes service that allows you to run Kubernetes on AWS. The frontend and backend will be deployed as nodes, where they can be accessed through the internet and communicate with one another to link up the different services. In this development environment, only 1 replica of each has been deployed to keep costs low. In production, more replicas would be deployed to share the load of increased traffic, to keep availabilty and reliability high. EKS will also automatically run health check on nodes, and if unhealthy, restart them and reroute traffic away from that node whilst the problem is being fix.
+
+### RDS
+The deployed application uses a Amazon Relational Database Service (RDS) database to store user information, allowing users to create and log into their accounts from different machines. For this project, the database has already been set up and the EKS deployment accesses it by using the credentials including username, password, name, endpoint of the database and the port through which to access the database. The database was configured with public access and an ingress security group allowing access through the corresponding postgreSQl port 5432. To keep costs low, a smaller database has been used in the devlopment stage. When going to production, it is likely a bigger database will need to be configured. 
+
+### Helm
+The original Kubernetes deployment and service charts were refactored into Helm charts. The Helm charts did not make any changes to the deployment of the applications, but was a way to better organise the deployment and service files, and allowed for a more efficient way to update the configuration of the deployment. It will look similiar to the following:<br>
+**public.ecr.aws/a1b2c3d4/node-api-circleci**
+
+The user may need to reconfigure these Helm charts. Specifically, in the  **values.yaml** for the frontend and backend, the **image repository** (line 8) may need to be changed to the **URI** of the corressponding frontend/ backend ECR repositiroy. The URIs for the frontend and backend can be found by going into public reposisotires in Amazon Elastic Container Service. 
 
 ### CircleCi
 CircleCi is the platform used for the continuous integration stage of the CI/CD pipeline. When new code is pushed to the main branch of this repository, CircleCi will build the image of the frontend and backend and run each of the test scripts. If all the code compiles without errors and the tests pass, the updated images will be pushed up to their corresponding ECR repositories. This means that new code can be constantly integrated into the ECR image repository. 
@@ -72,3 +84,8 @@ AWS_ECR_REGISTRY_ID - Value is your 12 digit AWS Account ID
 AWS_SECRET_ACCESS_KEY - Value will be inside .csv file
 ```
 Whenever new code is pushed to GitHub, CircleCi will now automatically run tests on it and push the images up to the relevant ECR repository.
+
+### Lambda
+When provisioned in the AWS console, the lambda function was able to automatically send an email to the owner alterting them when a new user signs up for the application, and an email to the new user welcoming them. However, integrating the function into the Terraform configuration is still being worked on. When fully integrated, it will create the Lambda function through Terraform and assign it all the relevant roles and policies. The code for the Lambda function can be found in **index.mjs** in the **infrastucture** directory.
+
+Furthermore, Amazon Simple Email Service (the service Lambda uses to send emails) is in Sandbox mode. This means we can only send emails to email addresses verified in Verified identities. To get into production mode where emails can be sent to unverified addresses (new users who have just created an acount in our application), a request needs to be sent to Amazon, where it will be reviewed.
