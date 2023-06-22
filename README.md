@@ -121,3 +121,7 @@ We now need to do something similar, but with prometheus we will be using a helm
 # // ** need to add in more here ** //
 
 ### Observability
+
+Prometheus can be used for analysing metrics and we can set up custom metrics to look at specific aspects of our app once it has been provisioned. For example, we have set up Prometheus in such a way that if you access the app with the endpoint `../actuator/prometheus` you can see a list of metrics. 
+
+However this is not the most visually pleasing way of checking the website is functioning as it should. We can use Grafana to display this information visually, and can make it easier to find and fix issues when they occur.
