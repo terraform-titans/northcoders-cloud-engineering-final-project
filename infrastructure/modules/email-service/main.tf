@@ -6,7 +6,7 @@ module "lambda_function" {
   handler       = "index.lambda_handler"
   runtime       = "nodejs18.x"
 
-  source_path = "./emailLambda.js"
+  source_path = "./index.mjs"
   attach_policy_json = true
   policy_json = jsonencode({
     "Version": "2012-10-17",
