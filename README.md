@@ -17,7 +17,8 @@ The final group project in fullfillment of Northcoders' Cloud Engineering bootca
 
 The following setup guide assumes access to an AWS account, as well as local installation  of: ArgoCD, CircleCI, Docker, Helm, Kubernetes & kubectl, and Terraform.
 
-You will also need to configure your AWS account to work with the AWS CLI and Terraform... **[This needs to be worked on]**
+You will also need to configure your AWS account to work with the AWS CLI and Terraform... **[This needs to be worked on]** 
+You need to make sure you are logged in to your AWS account via the terminal with your AWS credentials.
 
 ## Provisioning a VPC
 
@@ -31,12 +32,17 @@ Before we can do this, however, we need to setup a secure **remote state backend
 2) We can now run the config. In the `remote-state` directory: `providers.tf` and `backend.tf` **having commented out the terraform block therein**.
 3) Once the S3 bucket and DynamoDB table have been provisioned, **uncommment** the terraform block and run `terraform init` to intialize the remote state backend.
 
-### Virtual Private Cloud
+### Virtual Private Cloud and Elastic Kubernetes Service
 
-We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC. **[Does the user just need to run `terraform apply` and the thing will deploy?]**
+We can now navigate to the `infrastructure` directory and run `terraform apply` to provision our VPC. 
 
-**[User won't need to deploy kubernetes, because Argo will do it??]** 
+By running `terraform apply`, this will also create the empty EKS cluster.
 
+### Elastic Container Registry
+
+Here we will create the Elastic Container Registry repositories. This is where the docker image for the frontend and backend will be stored.
+
+To complete the next step, you will need to navigate to the ECR folders. You then need to run `terraform init` and then `terraform apply` in each of the folders (e.g. ecr-terraform-be then ecr-terraform-fe).
 
 ### CircleCi
 CircleCi is the platform used for the continuous integration stage of the CI/CD pipeline. When new code is pushed to the main branch of this repository, CircleCi will build the image of the frontend and backend and run each of the test scripts. If all the code compiles without errors and the tests pass, the updated images will be pushed up to their corresponding ECR repositories. This means that new code can be constantly integrated into the ECR image repository. 
@@ -72,3 +78,43 @@ AWS_ECR_REGISTRY_ID - Value is your 12 digit AWS Account ID
 AWS_SECRET_ACCESS_KEY - Value will be inside .csv file
 ```
 Whenever new code is pushed to GitHub, CircleCi will now automatically run tests on it and push the images up to the relevant ECR repository.
+
+### Argo 
+Argo is a kubernetes controller which continuously monitors running applications and compares the current, live state against the desired target state (as specified in the Git repo).
+
+To access ArgoCD, you will first need to make sure you are in the correct kubernetes context. To do this please run 
+
+`aws eks --region eu-west-2 update-kubeconfig \ --name tt-project-cluster`
+
+We now need to set up the Argo namespace through:
+
+`kubectl create namespace argocd` 
+
+and then download and apply the argo yaml:
+
+`kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml` 
+
+To check this has all gone through and you are set up correctly, you can use this command:
+
+`kubectl get pods -n argocd`
+
+To access Argo, you will need to port-forward and you will need two terminals for this.
+Using the port which is given to you next to argocd-server when you run `kubectl get pods -n argocd`.
+
+Run this in one of your terminals:
+`kubectl port-forward svc/argocd-server -n argocd 8080:443` and then log on to your browser and access localhost:8080. You should see the argo homepage.  In your other terminal, run this command which will give you the password needed to log-in on the browser with the username as **admin**. 
+
+`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+
+On the ArgoCD dashboard, you will need to navigate to the repo section and add this repo to argo. You will need to use a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to link your github repo to Argo securely. 
+
+Once the repo has been connected, you will need to set up the backend application. Select *add app* and make sure that you name the app something sensible, such as *backend* and select the project as *default*. In source, choose the repo url to be the one you've just set up and select the path as the backend folder of the repo.
+In destination, select the cluster as the default link which appears and name the namespace to be *default*. 
+
+Click create, then refresh and sync the app.
+
+Repeat the above for the frontend app!
+
+We now need to do something similar, but with prometheus we will be using a helm chart not a github repo. The set up of the app follows a similar process however we need to make sure that we change a couple of the variables for it to work.  
+
+
