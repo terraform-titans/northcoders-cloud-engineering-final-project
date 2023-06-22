@@ -143,7 +143,7 @@ public class CustomerService {
 
         // Create an InvokeRequest with the Lambda function ARN and input payload
         InvokeRequest request = InvokeRequest.builder()
-                .functionName("arn:aws:lambda:eu-west-2:751275925833:function:send-email")
+                .functionName("arn:aws:lambda:eu-west-2:723077234836:function:email-service-function")
                 .payload(SdkBytes.fromString(inputPayload, StandardCharsets.UTF_8)) 
                 .build();
 

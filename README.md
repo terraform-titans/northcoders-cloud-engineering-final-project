@@ -44,15 +44,40 @@ Here we will create the Elastic Container Registry repositories. This is where t
 
 To complete the next step, you will need to navigate to the ECR folders. You then need to run `terraform init` and then `terraform apply` in each of the folders (e.g. ecr-terraform-be then ecr-terraform-fe).
 
-### CircleCI
+### CircleCi
+CircleCi is the platform used for the continuous integration stage of the CI/CD pipeline. When new code is pushed to the main branch of this repository, CircleCi will build the image of the frontend and backend and run each of the test scripts. If all the code compiles without errors and the tests pass, the updated images will be pushed up to their corresponding ECR repositories. This means that new code can be constantly integrated into the ECR image repository. 
 
-When we open up circleCI, it will first of all build a docker image for us, which hold the
+Firstly, config.yml in .circleci must be set up. This is the configuration file that CircleCi will use to build images and run tests on them in the correct order. Look through this file if you wish to gain a better understanding. Some changes may be necessary for the config.yml to ensure it uses the correct ECR repository. 
+The **public-registry-alias for the frontend and backend (lines 50 and lines 73 in config.ymal)** will need to be changed to match your public registry alias. This is the set of letters and numbers found in the URI of your public repositories, between public.ecr.aws/ and the repository name. <br>
+If your URI is: <br>
+**public.ecr.aws/a1b2c3d4/node-api-circleci**<br>
+Your public-registary-alias will be: <br>
+**a1b2c3d4**
 
-To push up the docker images, you will need to set up circleCI. This is a continuous deployment service
+After, you will need to set up the relevant permissions.To step this up, first head to CircleCi and sign in/up using the same GitHub account that has access to this repository. In Projects, there should be a list of your repositories. Select Set Up Project on the relevant project, select Fastest and type main in From which branch.
 
+After this you will need to set up some credentials.
+1) Head to IAM in AWS.
+2) Under Users, select Add users. Give yourself user a username and select next.
+3) In Permission options, select Attach policies directly.
+4) In Permission policies, search for and select: <br>
+**AmazonElasticContainerRegistaryFullAccess** <br>
+**AmazonEC2ContainerRegistaryFullAccess**
+5) Select Next and Create User.
+6) Once it has been created, go to Security credentials in the new user.
+7) Create Access Key and select Third-party Service.
+8) Set a description and then Create Access Key. This will give you an Access key and Secret access key.
+9) Select Download .csv file so you can access them.
 
-1) 
-2)
+Once you have created the relevant AWS access credentials, they need to be applied to the CircleCi project.
+1) Go into Project Settings of your project and into environment variables.
+2) Select Add Environment Variable and add the following variables:
+```
+AWS_ACCESS_KEY_ID - Value will be inside .csv file
+AWS_ECR_REGISTRY_ID - Value is your 12 digit AWS Account ID
+AWS_SECRET_ACCESS_KEY - Value will be inside .csv file
+```
+Whenever new code is pushed to GitHub, CircleCi will now automatically run tests on it and push the images up to the relevant ECR repository.
 
 ### Argo 
 Argo is a kubernetes controller which continuously monitors running applications and compares the current, live state against the desired target state (as specified in the Git repo).
@@ -91,4 +116,5 @@ Click create, then refresh and sync the app.
 Repeat the above for the frontend app!
 
 We now need to do something similar, but with prometheus we will be using a helm chart not a github repo. The set up of the app follows a similar process however we need to make sure that we change a couple of the variables for it to work.  
+
 
