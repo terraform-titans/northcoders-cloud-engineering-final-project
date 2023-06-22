@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: "public.ecr.aws/l1w4p1o6/project-frontend"
+  repository: public.ecr.aws/s2m0r0e2/project-frontend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
